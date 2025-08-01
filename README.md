@@ -7,13 +7,6 @@ Built with a **React (TypeScript)** frontend and a **Node.js/Express** backend.
 
 ---
 
-## 🌐 Live Demo
-
-🔗 **Try the live app:**
-👉 [https://library-management-neon-chi.vercel.app](https://library-management-neon-chi.vercel.app)
-
----
-
 ## 🚀 Tech Stack
 
 ### 🖥️ Frontend
