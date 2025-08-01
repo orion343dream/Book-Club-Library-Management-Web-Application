@@ -138,7 +138,7 @@ library-system/
 📫 Reach me on:
 
 * [GitHub](https://github.com/orion343dream)
-* [LinkedIn]([https://linkedin.com/in/your-profile](https://www.linkedin.com/in/dilusha-sandaruwan-karunathilaka-94b339122/))
+* [LinkedIn](https://www.linkedin.com/in/dilusha-sandaruwan-karunathilaka-94b339122/)
 
 ---
 
