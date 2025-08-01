@@ -104,12 +104,12 @@ VITE_API_BASE_URL=https://your-backend-url.up.railway.app
 
 ```
 library-system/
-├── backend/           # Node.js + Express API
+├── server/           # Node.js + Express API
 │   ├── models/
 │   ├── routes/
 │   ├── controllers/
 │   └── server.js
-├── frontend/          # React + TypeScript App
+├── client/          # React + TypeScript App
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
@@ -138,7 +138,7 @@ library-system/
 📫 Reach me on:
 
 * [GitHub](https://github.com/orion343dream)
-* [LinkedIn](https://linkedin.com/in/your-profile)
+* [LinkedIn]([https://linkedin.com/in/your-profile](https://www.linkedin.com/in/dilusha-sandaruwan-karunathilaka-94b339122/))
 
 ---
 
