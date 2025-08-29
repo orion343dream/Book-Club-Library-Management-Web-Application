@@ -9,7 +9,6 @@ import {
 } from "../services/readerService"
 import Loading from "../components/PageLoading"
 
-
 const ReaderManagement: React.FC = () => {
   const [readers, setReaders] = useState<Reader[]>([])
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -22,7 +21,7 @@ const ReaderManagement: React.FC = () => {
   const [isAdding, setIsAdding] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [filterDomain, setFilterDomain] = useState("All")
-  const[loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true)
 
   // Load readers
   const loadReaders = async () => {
@@ -49,14 +48,14 @@ const ReaderManagement: React.FC = () => {
 
   // Email domains (guard invalid emails)
   const emailDomains = Array.from(
-    new Set(
-      readers
-        .map(r => {
-          const parts = (r.email || "").split("@")
-          return parts.length === 2 ? parts[1] : null
-        })
-        .filter((d): d is string => Boolean(d))
-    )
+      new Set(
+          readers
+              .map(r => {
+                const parts = (r.email || "").split("@")
+                return parts.length === 2 ? parts[1] : null
+              })
+              .filter((d): d is string => Boolean(d))
+      )
   )
 
   // Filtered list
@@ -67,10 +66,10 @@ const ReaderManagement: React.FC = () => {
     const term = searchTerm.toLowerCase()
 
     const matchesSearch =
-      name.includes(term) || email.includes(term) || phone.includes(searchTerm)
+        name.includes(term) || email.includes(term) || phone.includes(searchTerm)
     const matchesDomain =
-      filterDomain === "All" ||
-      (reader.email && reader.email.endsWith("@" + filterDomain))
+        filterDomain === "All" ||
+        (reader.email && reader.email.endsWith("@" + filterDomain))
 
     return matchesSearch && matchesDomain
   })
@@ -152,241 +151,242 @@ const ReaderManagement: React.FC = () => {
   }
 
   const resetForm = () =>
-    setFormData({ name: "", email: "", phone: "", address: "" })
+      setFormData({ name: "", email: "", phone: "", address: "" })
 
- 
+
+  // Style classes - updated styles only
   const inputBase =
-    "w-full rounded-md px-3 py-2 text-sm bg-slate-800/60 text-slate-100 placeholder-slate-400 border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition"
+      "w-full rounded-lg px-4 py-2 text-gray-900 placeholder-gray-400 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 transition shadow-sm"
 
   const btnBase =
-    "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900"
+      "inline-flex items-center justify-center rounded-lg px-5 py-2 text-sm font-semibold transition-shadow focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-600"
 
-  const btnIndigo = `${btnBase} bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 focus:ring-indigo-400`
-  const btnGreen = `${btnBase} bg-gradient-to-r from-emerald-600 to-green-600 text-white hover:from-emerald-500 hover:to-green-500 focus:ring-emerald-400`
-  const btnGray = `${btnBase} bg-slate-600 text-white hover:bg-slate-500 focus:ring-slate-400`
-  const btnRed = `${btnBase} bg-gradient-to-r from-rose-600 to-red-600 text-white hover:from-rose-500 hover:to-red-500 focus:ring-rose-400`
+  const btnIndigo = `${btnBase} bg-indigo-600 text-white hover:bg-indigo-700 shadow-md`
+  const btnGreen = `${btnBase} bg-green-600 text-white hover:bg-green-700 shadow-md`
+  const btnGray = `${btnBase} bg-gray-300 text-gray-800 hover:bg-gray-400 shadow`
+  const btnRed = `${btnBase} bg-red-600 text-white hover:bg-red-700 shadow-md`
+
 
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <Loading />
-      </div>
+        <div className="flex items-center justify-center h-screen bg-gradient-to-tr from-indigo-800 via-blue-900 to-purple-900">
+          <Loading />
+        </div>
     )
   }
 
   return (
-    <div className="relative max-w-7xl mx-auto p-6 sm:p-8 md:p-10 rounded-xl overflow-hidden text-white bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 shadow-2xl shadow-indigo-900/20">
-      {/* Subtle animated gradient blobs to echo Sidebar visuals */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-indigo-500/20 blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-0 w-56 h-56 rounded-full bg-purple-500/20 blur-3xl animate-pulse [animation-delay:1.5s]" />
-      </div>
-
-      <div className="relative z-10">
+      <div className="relative max-w-7xl mx-auto p-8 rounded-xl bg-gradient-to-tr from-indigo-800 via-blue-900 to-purple-900 text-white shadow-lg">
         {/* Header */}
-        <header className="mb-8 pb-4 border-b border-white/10 flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-3 group">
-            <div className="relative p-3 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg group-hover:shadow-xl transition-transform group-hover:scale-105">
-              {/* Decorative book icon style block - using pseudo box since no new imports allowed */}
-              <span className="block w-4 h-4 bg-white rounded-sm rotate-[-10deg]" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 animate-pulse" />
+        <header className="mb-8 border-b border-white/20 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-3">
+            {/* Decorative icon block */}
+            <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg transform transition-transform hover:scale-105 relative">
+              <span className="block w-5 h-5 bg-white rounded-sm rotate-[-10deg]" />
+              <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 animate-pulse" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                Reader Management
-              </h1>
-              <p className="text-xs text-white/60">Manage library readers</p>
+              <h1 className="text-xl font-bold">Reader Management</h1>
+              <p className="text-sm text-white/80">Manage library readers</p>
             </div>
+          </div>
+
+          {/* Search + filter */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:items-center w-full sm:w-auto max-w-md">
+            <input
+                type="text"
+                placeholder="Search by name, email, or phone..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className={inputBase.replace("text-gray-900", "text-white placeholder-white/70")}
+            />
+            <select
+                value={filterDomain}
+                onChange={e => setFilterDomain(e.target.value)}
+                className={inputBase.replace("text-gray-900", "text-white placeholder-white/70")}
+            >
+              <option value="All" className="text-indigo-900">All Email Domains</option>
+              {emailDomains.map(domain => (
+                  <option key={domain} value={domain} className="text-indigo-900">{domain}</option>
+              ))}
+            </select>
           </div>
         </header>
 
-        {/* Search + filter */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-          <input
-            type="text"
-            placeholder="Search by name, email, or phone..."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            className={inputBase}
-          />
-          <select
-            value={filterDomain}
-            onChange={e => setFilterDomain(e.target.value)}
-            className="w-full md:w-56 rounded-md px-3 py-2 text-sm bg-slate-800/60 text-slate-100 border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition"
-          >
-            <option value="All">All Email Domains</option>
-            {emailDomains.map(domain => (
-              <option key={domain} value={domain} className="bg-slate-900 text-slate-100">
-                {domain}
-              </option>
-            ))}
-          </select>
-        </div>
-
         {/* Add form trigger */}
-        {!isAdding && (
-          <button onClick={() => setIsAdding(true)} className={btnIndigo}>
-            + Add New Reader
-          </button>
+        {!isAdding && editingId === null && (
+            <div className="flex justify-end mb-6">
+              <button onClick={() => setIsAdding(true)} className={btnIndigo}>
+                + Add New Reader
+              </button>
+            </div>
         )}
 
         {/* Add form */}
-        {isAdding && (
-          <div className="mb-8 mt-4 p-6 rounded-xl border border-white/10 bg-slate-800/60 backdrop-blur-sm shadow-inner">
-            <h2 className="text-lg font-semibold mb-4">Add New Reader</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                name="name"
-                placeholder="Name"
-                value={formData.name}
-                onChange={handleChange}
-                className={inputBase}
-              />
-              <input
-                name="email"
-                type="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className={inputBase}
-              />
-              <input
-                name="phone"
-                placeholder="Phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className={inputBase}
-              />
-              <input
-                name="address"
-                placeholder="Address"
-                value={formData.address || ""}
-                onChange={handleChange}
-                className={inputBase}
-              />
-            </div>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <button onClick={handleAddReader} className={btnGreen}>
-                Save
-              </button>
-              <button
-                onClick={() => {
-                  setIsAdding(false)
-                  resetForm()
-                }}
-                className={btnGray}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+        {(isAdding || editingId !== null) && (
+            <section className="my-8 p-6 rounded-xl border border-white/20 bg-white/10 shadow-inner max-w-3xl mx-auto">
+              <h2 className="text-lg font-semibold mb-6 text-indigo-300">
+                {editingId ? "Edit Reader" : "Add New Reader"}
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <input
+                    name="name"
+                    placeholder="Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={inputBase.replace("text-gray-900", "text-white placeholder-white/70")}
+                    autoComplete="off"
+                />
+                <input
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={inputBase.replace("text-gray-900", "text-white placeholder-white/70")}
+                    autoComplete="off"
+                />
+                <input
+                    name="phone"
+                    placeholder="Phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={inputBase.replace("text-gray-900", "text-white placeholder-white/70")}
+                    autoComplete="off"
+                />
+                <input
+                    name="address"
+                    placeholder="Address"
+                    value={formData.address || ""}
+                    onChange={handleChange}
+                    className={inputBase.replace("text-gray-900", "text-white placeholder-white/70")}
+                    autoComplete="off"
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-4 mt-6 justify-center">
+                {editingId ? (
+                    <>
+                      <button onClick={() => saveEditing(editingId)} className={btnGreen}>
+                        Save Changes
+                      </button>
+                      <button
+                          onClick={() => {
+                            cancelEditing()
+                            resetForm()
+                          }}
+                          className={btnGray}
+                      >
+                        Cancel
+                      </button>
+                    </>
+                ) : (
+                    <>
+                      <button onClick={handleAddReader} className={btnGreen}>
+                        Add Reader
+                      </button>
+                      <button
+                          onClick={() => {
+                            setIsAdding(false)
+                            resetForm()
+                          }}
+                          className={btnGray}
+                      >
+                        Cancel
+                      </button>
+                    </>
+                )}
+              </div>
+            </section>
         )}
 
-        {/* Table / List */}
-        <div className="mt-6">{/* wrapper spacing */}
+        {/* Readers table */}
+        <div className="overflow-x-auto rounded-lg border border-white/20 bg-white/10 shadow-lg">
           {filteredReaders.length === 0 ? (
-            <div className="p-8 text-center rounded-xl border border-white/10 bg-slate-800/40 backdrop-blur-sm">
-              <p className="text-sm text-white/70">No readers found.</p>
-            </div>
+              <p className="p-10 text-center text-white/70">No readers found.</p>
           ) : (
-            <div className="overflow-x-auto rounded-xl border border-white/10 bg-slate-800/40 backdrop-blur-sm shadow-lg">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left text-slate-300 bg-slate-800/60">
-                    <th className="px-4 py-3 font-semibold">Name</th>
-                    <th className="px-4 py-3 font-semibold">Email</th>
-                    <th className="px-4 py-3 font-semibold">Phone</th>
-                    <th className="px-4 py-3 font-semibold">Address</th>
-                    <th className="px-4 py-3 font-semibold">Actions</th>
-                  </tr>
+              <table className="w-full table-auto border-collapse text-white">
+                <thead className="bg-gradient-to-r from-indigo-600 to-purple-600 font-semibold">
+                <tr>
+                  <th className="px-5 py-3 text-left">Name</th>
+                  <th className="px-5 py-3 text-left">Email</th>
+                  <th className="px-5 py-3 text-left">Phone</th>
+                  <th className="px-5 py-3 text-left">Address</th>
+                  <th className="px-5 py-3 text-left">Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                  {filteredReaders.map(reader =>
+                {filteredReaders.map(reader =>
                     editingId === reader._id ? (
-                      <tr key={reader._id} className="bg-yellow-300/10 hover:bg-yellow-300/20 transition">
-                        <td className="px-4 py-3 align-top">
-                          <input
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            className={inputBase}
-                          />
-                        </td>
-                        <td className="px-4 py-3 align-top">
-                          <input
-                            name="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className={inputBase}
-                          />
-                        </td>
-                        <td className="px-4 py-3 align-top">
-                          <input
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            className={inputBase}
-                          />
-                        </td>
-                        <td className="px-4 py-3 align-top">
-                          <input
-                            name="address"
-                            value={formData.address || ""}
-                            onChange={handleChange}
-                            className={inputBase}
-                          />
-                        </td>
-                        <td className="px-4 py-3 align-top whitespace-nowrap">
-                          <div className="flex flex-wrap gap-2">
-                            <button
-                              onClick={() => saveEditing(reader._id)}
-                              className={btnGreen}
-                            >
+                        <tr key={reader._id} className="bg-yellow-300/20 text-black">
+                          <td className="p-4">
+                            <input
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="w-full p-2 border border-gray-300 rounded"
+                            />
+                          </td>
+                          <td className="p-4">
+                            <input
+                                name="email"
+                                type="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="w-full p-2 border border-gray-300 rounded"
+                            />
+                          </td>
+                          <td className="p-4">
+                            <input
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                className="w-full p-2 border border-gray-300 rounded"
+                            />
+                          </td>
+                          <td className="p-4">
+                            <input
+                                name="address"
+                                value={formData.address || ""}
+                                onChange={handleChange}
+                                className="w-full p-2 border border-gray-300 rounded"
+                            />
+                          </td>
+                          <td className="p-4 whitespace-nowrap space-x-3">
+                            <button onClick={() => saveEditing(reader._id)} className={btnGreen}>
                               Save
                             </button>
                             <button onClick={cancelEditing} className={btnGray}>
                               Cancel
                             </button>
-                          </div>
-                        </td>
-                      </tr>
+                          </td>
+                        </tr>
                     ) : (
-                      <tr
-                        key={reader._id}
-                        className="odd:bg-slate-800/30 even:bg-slate-800/10 hover:bg-slate-700/40 transition"
-                      >
-                        <td className="px-4 py-3 align-top text-slate-100">{reader.name}</td>
-                        <td className="px-4 py-3 align-top text-slate-100 break-all">{reader.email}</td>
-                        <td className="px-4 py-3 align-top text-slate-100">{reader.phone}</td>
-                        <td className="px-4 py-3 align-top text-slate-100">{reader.address || "—"}</td>
-                        <td className="px-4 py-3 align-top whitespace-nowrap">
-                          <div className="flex flex-wrap gap-2">
-                            <button
-                              onClick={() => startEditing(reader)}
-                              className={btnIndigo}
-                            >
+                        <tr
+                            key={reader._id}
+                            className="even:bg-white/10 hover:bg-purple-800/30 transition"
+                        >
+                          <td className="px-5 py-3">{reader.name}</td>
+                          <td className="px-5 py-3 break-words">{reader.email}</td>
+                          <td className="px-5 py-3">{reader.phone}</td>
+                          <td className="px-5 py-3">{reader.address || "—"}</td>
+                          <td className="px-5 py-3 whitespace-nowrap space-x-3">
+                            <button onClick={() => startEditing(reader)} className={btnIndigo}>
                               Edit
                             </button>
-                            <button
-                              onClick={() => handleDeleteReader(reader._id)}
-                              className={btnRed}
-                            >
+                            <button onClick={() => handleDeleteReader(reader._id)} className={btnRed}>
                               Delete
                             </button>
-                          </div>
-                        </td>
-                      </tr>
+                          </td>
+                        </tr>
                     )
-                  )}
+                )}
                 </tbody>
               </table>
-            </div>
           )}
         </div>
       </div>
-    </div>
   )
 }
 

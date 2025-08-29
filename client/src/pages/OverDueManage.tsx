@@ -93,10 +93,7 @@ const OverdueManagement: React.FC = () => {
       return;
     }
 
-
-      const toastId = toast.loading("Sending email...")
-
-
+    const toastId = toast.loading("Sending email...");
     try {
       setActionLoading(true);
       await sendOverdueEmail({
@@ -107,10 +104,9 @@ const OverdueManagement: React.FC = () => {
           dueDate: l.dueDate,
         })),
       });
-      toast.success(`Email sent to ${group.readerName}`,
-          {id: toastId}
-
-      );
+      toast.success(`Email sent to ${group.readerName}`, {
+        id: toastId,
+      });
     } catch (err) {
       console.error(err);
       toast.error("Failed to send email", { id: toastId });
@@ -143,103 +139,104 @@ const OverdueManagement: React.FC = () => {
 
   if (loading) {
     return (
-      <Loading/>
+        <div className="flex items-center justify-center h-screen bg-gray-50">
+          <Loading />
+        </div>
     );
   }
 
   const btnIndigo =
-    "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium bg-indigo-600 hover:bg-indigo-700 text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-indigo-400 disabled:opacity-50";
+      "inline-flex items-center justify-center rounded-lg px-5 py-2 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md transition focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-600 disabled:opacity-50";
   const btnGreen =
-    "inline-flex items-center justify-center rounded-md px-3 py-1 text-sm font-medium bg-green-600 hover:bg-green-700 text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-green-400 disabled:opacity-50";
+      "inline-flex items-center justify-center rounded-lg px-4 py-1.5 text-sm font-semibold bg-green-600 hover:bg-green-700 text-white shadow-md transition focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-green-600 disabled:opacity-50";
   const groupCard =
-    "bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 shadow-lg";
+      "bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 shadow-lg";
 
   return (
-    <div className="relative max-w-5xl mx-auto p-6 mt-8 rounded-2xl overflow-hidden text-white bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 shadow-2xl shadow-indigo-900/20">
-      <div className="relative z-10">
-        <header className="mb-8 pb-4 border-b border-white/10 flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-3 group">
-            <div className="relative p-3 rounded-xl bg-gradient-to-br from-rose-600 to-red-600 shadow-lg">
-              <span className="block w-4 h-4 bg-white rounded-sm rotate-[-10deg]" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 animate-ping" />
+      <div className="max-w-5xl mx-auto p-6 mt-8 rounded-2xl overflow-hidden text-white bg-gradient-to-tr from-indigo-800 via-blue-900 to-purple-900 shadow-2xl shadow-indigo-900/20">
+        <div className="relative z-10">
+          {/* Header */}
+          <header className="mb-8 pb-4 border-b border-white/20 flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-3 group">
+              <div className="relative p-3 rounded-xl bg-gradient-to-br from-rose-600 to-red-600 shadow-lg">
+                <span className="block w-4 h-4 bg-white rounded-sm rotate-[-10deg]" />
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 animate-pulse" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-white to-rose-200 bg-clip-text text-transparent">
+                  Overdue Lendings
+                </h1>
+                <p className="text-xs text-white/60">Books past due by reader</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-white to-rose-200 bg-clip-text text-transparent">
-                Overdue Lendings
-              </h1>
-              <p className="text-xs text-white/60">Books past due by reader</p>
-            </div>
-          </div>
-        </header>
+          </header>
 
-        {groups.length === 0 ? (
-          <p className="text-white/70">No overdue lendings found.</p>
-        ) : (
-          <div className="space-y-10">
-            {groups.map((g) => (
-              <section key={g.readerId} className={groupCard}>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-                  <h2 className="text-lg font-bold text-rose-300">
-                    {g.readerName}{" "}
-                    <span className="text-sm text-white/70 font-normal">
+          {groups.length === 0 ? (
+              <p className="text-white/70">No overdue lendings found.</p>
+          ) : (
+              <div className="space-y-10">
+                {groups.map((g) => (
+                    <section key={g.readerId} className={groupCard}>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                        <h2 className="text-lg font-bold text-rose-300">
+                          {g.readerName}{" "}
+                          <span className="text-sm text-white/70 font-normal">
                       ({g.items.length} overdue book{g.items.length > 1 ? "s" : ""})
                     </span>
-                  </h2>
-                  <button
-                    onClick={() => handleSendEmail(g)}
-                    className={btnIndigo}
-                    disabled={actionLoading || !g.readerEmail}
-                  >
-                    {actionLoading ? "Sending..." : "Send Email Notification"}
-                  </button>
-                </div>
-
-                <div className="overflow-x-auto rounded-xl border border-white/10 shadow-inner">
-                  <table className="w-full table-auto border-collapse text-sm">
-                    <thead>
-                      <tr className="bg-gradient-to-r from-rose-600 to-red-600 text-left">
-                        <th className="border border-white/10 px-4 py-2">Book Title</th>
-                        <th className="border border-white/10 px-4 py-2">Due Date</th>
-                        <th className="border border-white/10 px-4 py-2">Days Overdue</th>
-                        <th className="border border-white/10 px-4 py-2">Days Borrowed</th>
-                        <th className="border border-white/10 px-4 py-2">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {g.items.map((l) => (
-                        <tr
-                          key={l._id}
-                          className="hover:bg-white/5 transition odd:bg-white/10 even:bg-white/5"
+                        </h2>
+                        <button
+                            onClick={() => handleSendEmail(g)}
+                            className={btnIndigo}
+                            disabled={actionLoading || !g.readerEmail}
                         >
-                          <td className="border border-white/10 px-4 py-2">{l.book.title}</td>
-                          <td className="border border-white/10 px-4 py-2">{formatDisplay(l.dueDate)}</td>
-                          <td className="border border-white/10 px-4 py-2 text-rose-300 font-semibold">
-                            {daysOverdue(l.dueDate)}
-                          </td>
-                          <td className="border border-white/10 px-4 py-2">
-                            {daysSinceBorrowed(l.borrowedAt)}
-                          </td>
-                          <td className="border border-white/10 px-4 py-2 whitespace-nowrap">
-                            <button
-                              onClick={() => handleReturn(l._id)}
-                              disabled={actionLoading}
-                              className={btnGreen}
-                            >
-                              Mark Returned
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-            ))}
-          </div>
-        )}
+                          {actionLoading ? "Sending..." : "Send Email Notification"}
+                        </button>
+                      </div>
+
+                      <div className="overflow-x-auto rounded-xl border border-white/20 shadow-inner">
+                        <table className="w-full table-auto border-collapse text-sm">
+                          <thead>
+                          <tr className="bg-gradient-to-r from-rose-600 to-red-600 text-left">
+                            <th className="border border-white/10 px-4 py-2">Book Title</th>
+                            <th className="border border-white/10 px-4 py-2">Due Date</th>
+                            <th className="border border-white/10 px-4 py-2">Days Overdue</th>
+                            <th className="border border-white/10 px-4 py-2">Days Borrowed</th>
+                            <th className="border border-white/10 px-4 py-2">Actions</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {g.items.map((l) => (
+                              <tr
+                                  key={l._id}
+                                  className="hover:bg-white/10 transition odd:bg-white/20 even:bg-white/10"
+                              >
+                                <td className="border border-white/10 px-4 py-2">{l.book.title}</td>
+                                <td className="border border-white/10 px-4 py-2">{formatDisplay(l.dueDate)}</td>
+                                <td className="border border-white/10 px-4 py-2 text-rose-400 font-semibold">
+                                  {daysOverdue(l.dueDate)}
+                                </td>
+                                <td className="border border-white/10 px-4 py-2">{daysSinceBorrowed(l.borrowedAt)}</td>
+                                <td className="border border-white/10 px-4 py-2 whitespace-nowrap">
+                                  <button
+                                      onClick={() => handleReturn(l._id)}
+                                      disabled={actionLoading}
+                                      className={btnGreen}
+                                  >
+                                    Mark Returned
+                                  </button>
+                                </td>
+                              </tr>
+                          ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                ))}
+              </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
+  )
 };
 
 export default OverdueManagement;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth.ts";
 import { logout } from "../services/authService.ts";
@@ -39,107 +39,120 @@ const Navbar = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <nav className="bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 shadow-lg border-b border-purple-700/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-14 md:h-16">
-          {/* Logo and Title: flex-row, less padding, aligned vertically center */}
-          <div className="flex items-center space-x-3">
-            <div className="relative p-1.5 md:p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-              <MdLibraryBooks className="h-5 w-5 md:h-6 md:w-6 text-white" />
-              <div className="absolute -top-1 -right-1 w-2 h-2 md:w-3 md:h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse"></div>
+      <nav className="bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 shadow-2xl border-b border-indigo-700/50">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex justify-between items-center h-16 md:h-20">
+            {/* Logo and Title */}
+            <div className="flex items-center space-x-5">
+              <div className="relative p-2 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl shadow-xl group hover:shadow-2xl transition-transform duration-300 hover:scale-110">
+                <MdLibraryBooks className="h-7 w-7 text-white" />
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse" />
+              </div>
+              <div className="flex flex-col leading-tight select-none">
+                <h2 className="text-lg md:text-xl font-bold tracking-wide bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">
+                  Library System
+                </h2>
+                <p className="text-xs md:text-sm text-white/70 mt-0.5">
+                  Management Panel
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col leading-tight">
-              <h2 className="text-sm md:text-lg font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                Library System
-              </h2>
-              <p className="text-xs md:text-xs text-white/60 -mt-0.5">Management Panel</p>
-            </div>
-          </div>
 
-          {/* Desktop Navigation Buttons */}
-          <div className="hidden md:flex items-center space-x-3">
-            {!isLoggedIn && (
-              <button
-                onClick={handleLogin}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 md:px-4 py-1.5 md:py-2 rounded-md text-sm md:text-sm font-medium transition"
-              >
-                Login
-              </button>
-            )}
-
-            {isLoggedIn && (
-              <>
-                <button
-                  onClick={handleDashboard}
-                  className="bg-gray-700 hover:bg-gray-800 text-white px-3 md:px-4 py-1.5 md:py-2 rounded-md text-sm md:text-sm font-medium transition"
-                >
-                  Dashboard
-                </button>
-                <button
-                  disabled={isLoading}
-                  onClick={handleLogout}
-                  className="bg-red-600 hover:bg-red-700 text-white px-3 md:px-4 py-1.5 md:py-2 rounded-md text-sm md:text-sm font-medium transition"
-                >
-                  {isLoading ? "Logging out..." : "Logout"}
-                </button>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={toggleMenu}
-              className="text-gray-300 hover:text-white focus:outline-none"
-              aria-label="Toggle menu"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-purple-700/40 bg-gray-800">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-6">
               {!isLoggedIn && (
-                <button
-                  onClick={handleLogin}
-                  className="block w-full text-left bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-md text-base font-medium"
-                >
-                  Login
-                </button>
+                  <button
+                      onClick={handleLogin}
+                      className="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded-xl text-sm font-semibold shadow-lg transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      aria-label="Login"
+                  >
+                    Login
+                  </button>
               )}
 
               {isLoggedIn && (
-                <>
-                  <button
-                    onClick={handleDashboard}
-                    className="block w-full text-left bg-gray-700 hover:bg-gray-800 text-white px-3 py-2 rounded-md text-base font-medium"
-                  >
-                    Dashboard
-                  </button>
-                  <button
-                    disabled={isLoading}
-                    onClick={handleLogout}
-                    className="block w-full text-left bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-base font-medium"
-                  >
-                    {isLoading ? <><Loading/></> : "logout"}
-                  </button>
-                </>
+                  <>
+                    <button
+                        onClick={handleDashboard}
+                        className="bg-slate-700 hover:bg-slate-800 text-white px-6 py-2 rounded-xl text-sm font-semibold shadow-lg transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                        aria-label="Dashboard"
+                    >
+                      Dashboard
+                    </button>
+                    <button
+                        disabled={isLoading}
+                        onClick={handleLogout}
+                        className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-xl text-sm font-semibold shadow-lg transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-60"
+                        aria-label="Logout"
+                    >
+                      {isLoading ? "Logging out..." : "Logout"}
+                    </button>
+                  </>
               )}
             </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                  onClick={toggleMenu}
+                  className="text-white hover:text-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                  aria-label="Toggle menu"
+              >
+                <svg
+                    className="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                  <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
-        )}
-      </div>
-    </nav>
+
+          {/* Mobile Navigation Menu */}
+          {isMenuOpen && (
+              <div className="md:hidden border-t border-indigo-700/50 bg-indigo-900">
+                <div className="px-4 pt-4 pb-6 space-y-4 sm:px-6">
+                  {!isLoggedIn && (
+                      <button
+                          onClick={handleLogin}
+                          className="block w-full text-left bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-3 rounded-xl text-base font-semibold shadow-md transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          aria-label="Login"
+                      >
+                        Login
+                      </button>
+                  )}
+
+                  {isLoggedIn && (
+                      <>
+                        <button
+                            onClick={handleDashboard}
+                            className="block w-full text-left bg-slate-700 hover:bg-slate-800 text-white px-4 py-3 rounded-xl text-base font-semibold shadow-md transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                            aria-label="Dashboard"
+                        >
+                          Dashboard
+                        </button>
+                        <button
+                            disabled={isLoading}
+                            onClick={handleLogout}
+                            className="block w-full text-left bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-xl text-base font-semibold shadow-md transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-60"
+                            aria-label="Logout"
+                        >
+                          {isLoading ? <Loading /> : "Logout"}
+                        </button>
+                      </>
+                  )}
+                </div>
+              </div>
+          )}
+        </div>
+      </nav>
   );
 };
 

@@ -1,86 +1,105 @@
-import React from 'react';
+import React from "react";
 
 const LoadingAnimation: React.FC = () => {
   return (
-    <div className="h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-10 left-10 w-32 h-32 bg-purple-400 rounded-full opacity-10 animate-pulse"></div>
-        <div className="absolute top-1/3 right-20 w-24 h-24 bg-blue-400 rounded-full opacity-10 animate-bounce"></div>
-        <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-pink-400 rounded-full opacity-10 animate-pulse"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-28 h-28 bg-indigo-400 rounded-full opacity-10 animate-bounce"></div>
-      </div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-tr from-indigo-900 via-blue-900 to-purple-900 p-6 overflow-hidden relative text-white select-none">
+        {/* Animated Gradient Blobs */}
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute top-24 left-16 w-32 h-32 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-700 to-blue-600 blur-3xl animate-animateSlowPulse"></div>
+          <div className="absolute bottom-28 right-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-600 via-rose-500 to-red-600 blur-3xl animate-animateSlowPulse animation-delay-[1500ms]"></div>
+          <div className="absolute top-2/3 left-1/3 w-28 h-28 rounded-full bg-gradient-to-r from-green-500 via-emerald-400 to-green-600 blur-2xl animate-animateSlowPulse animation-delay-[1200ms]"></div>
+        </div>
 
-      {/* Main Loading Content */}
-      <div className="text-center z-10">
-        {/* Logo */}
-        <div className="mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl mb-4 shadow-2xl animate-pulse">
-            <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        {/* Logo with pulse */}
+        <div className="mb-12 flex flex-col items-center">
+          <div className="w-24 h-24 rounded-xl bg-gradient-to-r from-indigo-400 to-purple-500 shadow-lg flex items-center justify-center animate-pulse">
+            <svg
+                className="w-12 h-12 text-white"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+              <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+          <h1 className="mt-4 text-xl font-semibold bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">
             Book Club Library
           </h1>
         </div>
 
-        {/* Animated Books Loading */}
-        <div className="flex justify-center items-end space-x-2 mb-8">
-          <div className="w-6 h-8 bg-gradient-to-b from-red-400 to-red-600 rounded-sm animate-bounce" style={{animationDelay: '0s'}}></div>
-          <div className="w-6 h-10 bg-gradient-to-b from-blue-400 to-blue-600 rounded-sm animate-bounce" style={{animationDelay: '0.1s'}}></div>
-          <div className="w-6 h-7 bg-gradient-to-b from-green-400 to-green-600 rounded-sm animate-bounce" style={{animationDelay: '0.2s'}}></div>
-          <div className="w-6 h-9 bg-gradient-to-b from-yellow-400 to-orange-600 rounded-sm animate-bounce" style={{animationDelay: '0.3s'}}></div>
-          <div className="w-6 h-8 bg-gradient-to-b from-purple-400 to-purple-600 rounded-sm animate-bounce" style={{animationDelay: '0.4s'}}></div>
-          <div className="w-6 h-10 bg-gradient-to-b from-pink-400 to-pink-600 rounded-sm animate-bounce" style={{animationDelay: '0.5s'}}></div>
+        {/* Creative Loading Bars */}
+        <div className="flex space-x-3 mb-14">
+          {["from-pink-500 to-pink-700", "from-purple-500 to-purple-700", "from-indigo-500 to-indigo-700", "from-blue-500 to-blue-700", "from-emerald-500 to-emerald-700"].map(
+              (grad, idx) => (
+                  <div
+                      key={idx}
+                      className={`w-4 rounded-sm bg-gradient-to-b ${grad} animate-loadingBar`}
+                      style={{
+                        animationDelay: `${idx * 0.15}s`,
+                        height: `${6 + idx * 6}px`,
+                        animationTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+                        animationIterationCount: "infinite",
+                        animationDirection: "alternate",
+                        animationDuration: "1.2s",
+                      }}
+                  />
+              )
+          )}
         </div>
 
-        {/* Spinning Loader */}
-        <div className="mb-6">
-          <div className="w-16 h-16 mx-auto border-4 border-purple-300 border-t-purple-600 rounded-full animate-spin"></div>
+        {/* Circular spinner */}
+        <div className="mb-10">
+          <svg
+              className="animate-spin h-16 w-16 text-indigo-300"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+          >
+            <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+            />
+            <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            />
+          </svg>
         </div>
 
         {/* Loading Text */}
-        <div className="space-y-2">
-          <p className="text-xl font-semibold text-white animate-pulse">
-            Loading Your Library...
-          </p>
-          <p className="text-purple-200">
-            Please wait while we prepare your reading experience
+        <div className="text-center space-y-2">
+          <p className="text-lg font-semibold animate-pulse">Loading Your Library...</p>
+          <p className="text-indigo-300 max-w-sm mx-auto">
+            Sit tight — we’re fetching your reading adventure!
           </p>
         </div>
 
-        {/* Progress Dots */}
-        <div className="flex justify-center space-x-2 mt-6">
-          <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '0s'}}></div>
-          <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-          <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
-          <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '0.6s'}}></div>
-          <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '0.8s'}}></div>
+        {/* Progress dots */}
+        <div className="flex justify-center space-x-3 mt-8">
+          {[...Array(5)].map((_, i) => (
+              <div
+                  key={i}
+                  className="w-3 h-3 bg-indigo-400 rounded-full animate-pulse"
+                  style={{ animationDelay: `${i * 0.25}s` }}
+              />
+          ))}
         </div>
 
-        {/* Loading Quote */}
-        <div className="mt-8 max-w-md mx-auto">
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4">
-            <p className="text-purple-200 italic text-sm">
-              "A room without books is like a body without a soul"
-            </p>
-            <p className="text-purple-300 text-xs mt-1">- Marcus Tullius Cicero</p>
-          </div>
-        </div>
+        {/* Quote Container */}
+        <blockquote className="mt-12 max-w-md bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 mx-auto text-indigo-200 italic text-sm shadow-lg">
+          “Reading is a conversation. All books talk. But a good book listens as well.”
+          <footer className="mt-2 text-xs text-indigo-400">– Mark Haddon</footer>
+        </blockquote>
       </div>
-
-      {/* Floating Book Animation */}
-      <div className="absolute top-20 left-20 animate-bounce" style={{animationDelay: '1s'}}>
-        <div className="w-12 h-16 bg-gradient-to-b from-indigo-400 to-indigo-600 rounded opacity-20 transform rotate-12"></div>
-      </div>
-      <div className="absolute top-40 right-32 animate-bounce" style={{animationDelay: '1.5s'}}>
-        <div className="w-10 h-14 bg-gradient-to-b from-emerald-400 to-emerald-600 rounded opacity-20 transform -rotate-12"></div>
-      </div>
-      <div className="absolute bottom-32 left-40 animate-bounce" style={{animationDelay: '2s'}}>
-        <div className="w-14 h-18 bg-gradient-to-b from-rose-400 to-rose-600 rounded opacity-20 transform rotate-6"></div>
-      </div>
-    </div>
   );
 };
 

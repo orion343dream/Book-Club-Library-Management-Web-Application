@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import DashboardStats from "../components/dashboard/DashboardStats";
 import DashboardCharts from "../components/dashboard/DashboardCharts";
 import RecentActivity from "../components/dashboard/RecentActivity";
 import { MdLibraryBooks, MdPersonAdd, MdBook } from "react-icons/md";
@@ -27,79 +26,52 @@ const Dashboard: React.FC = () => {
   const [loadingActivities, setLoadingActivities] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchBookCount = async () => {
-    try {
-      setLoading(true);
-      const count = await getTotalBooksCount();
-      setBookCount(count);
-    } catch (error) {
-      console.error("Error fetching book count:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchLendingCount = async () => {
-    try {
-      setLoading(true);
-      const count = await getTotalLendingsCount();
-      setLendingCount(count);
-    } catch (error) {
-      console.error("Error fetching lending count:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchOverdueCount = async () => {
-    try {
-      const count = await getTotalOverdueCount();
-      setOverdueCount(count);
-    } catch (error) {
-      console.error("Error fetching overdue count:", error);
-    }
-  };
-
-  const fetchReadersCount = async () => {
-    try {
-      setLoading(true);
-      const count = await getTotalReaders();
-      setReaders(count);
-    } catch (error) {
-      console.error("Error fetching readers count:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchMonthlyLending = async () => {
-    try {
-      const data = await getMonthlyLendings();
-      setMonthlyLending(data);
-    } catch (error) {
-      console.error("Error fetching monthly lending data:", error);
-    }
-  };
-
-  const fetchRecentActivities = async () => {
-    try {
-      setLoadingActivities(true);
-      const activities = await getRecentActivity();
-      setRecentActivities(activities);
-    } catch (error) {
-      console.error("Error fetching recent activities:", error);
-    } finally {
-      setLoadingActivities(false);
-    }
-  };
-
   useEffect(() => {
-    fetchBookCount();
-    fetchLendingCount();
-    fetchOverdueCount();
-    fetchReadersCount();
-    fetchMonthlyLending();
-    fetchRecentActivities();
+    const loadData = async () => {
+      setLoading(true);
+      await Promise.all([
+        (async () => {
+          try {
+            const count = await getTotalBooksCount();
+            setBookCount(count);
+          } catch (e) {}
+        })(),
+        (async () => {
+          try {
+            const count = await getTotalLendingsCount();
+            setLendingCount(count);
+          } catch (e) {}
+        })(),
+        (async () => {
+          try {
+            const count = await getTotalOverdueCount();
+            setOverdueCount(count);
+          } catch (e) {}
+        })(),
+        (async () => {
+          try {
+            const count = await getTotalReaders();
+            setReaders(count);
+          } catch (e) {}
+        })(),
+        (async () => {
+          try {
+            const data = await getMonthlyLendings();
+            setMonthlyLending(data);
+          } catch (e) {}
+        })(),
+        (async () => {
+          try {
+            setLoadingActivities(true);
+            const activities = await getRecentActivity();
+            setRecentActivities(activities);
+          } catch (e) {}
+          setLoadingActivities(false);
+        })(),
+      ]);
+      setLoading(false);
+    };
+    loadData();
   }, []);
 
   if (loading) {
@@ -107,92 +79,136 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-purple-900 to-purple-800 p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <header className="mb-10">
-          <h1 className="text-4xl font-bold text-white tracking-wide">
-            Library Dashboard
+      <div className="min-h-screen bg-white p-10 font-sans text-gray-900 rounded-2xl shadow-2xl max-w-7xl mx-auto">
+        <header className="mb-12 text-center">
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">
+            Book Club Library
           </h1>
-          <p className="mt-2 text-purple-300 max-w-xl">
-            Welcome back! Here’s what’s happening in the Book Club Library.
+          <p className="text-lg text-gray-600">
+            Your Library’s summary at a glance.
           </p>
         </header>
 
-        {/* Stats */}
-        <section>
-          <DashboardStats
-            totalCustomers={readers}
-            totalItems={bookCount}
-            totalOrders={lendingCount}
-            totalRevenue={overdueCount}
+        {/* Statistics Cards */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto mb-16">
+          <StatCard
+              title="Total Books"
+              value={bookCount}
+              icon={
+                <MdLibraryBooks className="w-10 h-10 text-indigo-600 bg-indigo-100 p-1 rounded-lg shadow-inner" />
+              }
+              iconBg="bg-indigo-100"
+          />
+          <StatCard
+              title="Readers"
+              value={readers}
+              icon={
+                <MdPersonAdd className="w-10 h-10 text-green-600 bg-green-100 p-1 rounded-lg shadow-inner" />
+              }
+              iconBg="bg-green-100"
+          />
+          <StatCard
+              title="Lendings"
+              value={lendingCount}
+              icon={
+                <MdBook className="w-10 h-10 text-purple-600 bg-purple-100 p-1 rounded-lg shadow-inner" />
+              }
+              iconBg="bg-purple-100"
+          />
+          <StatCard
+              title="Overdue"
+              value={overdueCount}
+              icon={
+                <MdLibraryBooks className="w-10 h-10 text-red-600 bg-red-100 p-1 rounded-lg shadow-inner" />
+              }
+              iconBg="bg-red-100"
           />
         </section>
 
-        {/* Chart */}
-        <section className="mt-12 bg-purple-900 rounded-xl shadow-lg p-8">
-          <DashboardCharts monthlyLending={monthlyLending} />
-        </section>
+        <div className="flex flex-col lg:flex-row gap-12 max-w-7xl mx-auto">
+          {/* Left: Chart */}
+          <section className="flex-1 bg-white rounded-2xl shadow-xl p-8">
+            <h2 className="text-2xl font-semibold mb-6 text-indigo-700">
+              Monthly Lending Trends
+            </h2>
+            <DashboardCharts monthlyLending={monthlyLending} />
+          </section>
 
-        {/* Quick Actions */}
-        <section className="mt-12 bg-purple-900 rounded-xl shadow-lg p-8">
-          <h2 className="text-xl text-purple-200 font-semibold mb-6">
-            Quick Actions
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              {
-                icon: MdBook,
-                label: "Lend Book",
-                color: "text-indigo-400",
-                hoverBg: "hover:bg-indigo-700",
-                border: "border-indigo-600",
-                onClick: () => navigate("/dashboard/lendings"),
-              },
-              {
-                icon: MdPersonAdd,
-                label: "Add Reader",
-                color: "text-green-400",
-                hoverBg: "hover:bg-green-700",
-                border: "border-green-600",
-                onClick: () => navigate("/dashboard/readers"),
-              },
-              {
-                icon: MdLibraryBooks,
-                label: "Add Book",
-                color: "text-purple-400",
-                hoverBg: "hover:bg-purple-700",
-                border: "border-purple-600",
-                onClick: () => navigate("/dashboard/books"),
-              },
-            ].map(({ icon: Icon, label, color, hoverBg, border, onClick }) => (
-              <button
-                key={label}
-                className={`flex flex-col items-center justify-center p-4 rounded-xl border ${border} bg-purple-800 text-purple-100 transition duration-200 ${hoverBg} focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-purple-500`}
-                type="button"
-                onClick={onClick}
-              >
-                <Icon className={`w-8 h-8 mb-2 ${color}`} />
-                <span className="text-sm font-medium">{label}</span>
-              </button>
-            ))}
-          </div>
-        </section>
+          {/* Right Side: Recent Activity + Quick Actions */}
+          <aside className="w-full lg:w-96 flex flex-col gap-8">
+            {/* Recent Activity */}
+            <section className="bg-white rounded-2xl shadow-xl p-6 flex flex-col">
+              <h2 className="text-2xl font-semibold mb-4 text-indigo-700">
+                Recent Activity
+              </h2>
+              {loadingActivities ? (
+                  <p className="text-gray-500">Loading recent activities...</p>
+              ) : (
+                  <RecentActivity activities={recentActivities} />
+              )}
+            </section>
 
-        {/* Recent Activity */}
-        <section className="mt-6 bg-purple-900 rounded-xl shadow-lg p-8">
-          <h2 className="text-xl text-purple-200 font-semibold mb-6">
-            Recent Activity
-          </h2>
-          {loadingActivities ? (
-            <p className="text-purple-300">Loading recent activities...</p>
-          ) : (
-            <RecentActivity activities={recentActivities} />
-          )}
-        </section>
+            {/* Quick Actions */}
+            <section className="bg-white rounded-2xl shadow-xl p-6">
+              <h2 className="text-xl font-semibold mb-4 text-indigo-700">
+                Quick Actions
+              </h2>
+              <div className="flex flex-col space-y-4">
+                {[
+                  {
+                    icon: MdBook,
+                    label: "Lend a Book",
+                    onClick: () => navigate("/dashboard/lendings"),
+                    bgColor: "bg-indigo-100",
+                    textColor: "text-indigo-700",
+                  },
+                  {
+                    icon: MdPersonAdd,
+                    label: "Add a Reader",
+                    onClick: () => navigate("/dashboard/readers"),
+                    bgColor: "bg-green-100",
+                    textColor: "text-green-700",
+                  },
+                  {
+                    icon: MdLibraryBooks,
+                    label: "Add a Book",
+                    onClick: () => navigate("/dashboard/books"),
+                    bgColor: "bg-purple-100",
+                    textColor: "text-purple-700",
+                  },
+                ].map(({ icon: Icon, label, onClick, bgColor, textColor }) => (
+                    <button
+                        key={label}
+                        type="button"
+                        onClick={onClick}
+                        className={`flex items-center gap-3 px-5 py-3 rounded-xl font-semibold transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-400 ${bgColor} ${textColor} hover:brightness-110`}
+                    >
+                      <Icon className="w-6 h-6" />
+                      {label}
+                    </button>
+                ))}
+              </div>
+            </section>
+          </aside>
+        </div>
       </div>
-    </div>
   );
 };
+
+interface StatCardProps {
+  title: string;
+  value: number;
+  icon: React.ReactNode;
+  iconBg: string;
+}
+const StatCard: React.FC<StatCardProps> = ({ title, value, icon, iconBg }) => (
+    <div className="bg-white rounded-2xl shadow-xl p-6 flex items-center space-x-5 cursor-default transform transition hover:scale-[1.03]">
+      <div className={`${iconBg} p-3 rounded-xl`}>{icon}</div>
+      <div>
+        <p className="text-indigo-400 text-sm font-semibold">{title}</p>
+        <h3 className="text-3xl font-extrabold text-gray-900">{value.toLocaleString()}</h3>
+      </div>
+    </div>
+);
 
 export default Dashboard;

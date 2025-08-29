@@ -11,7 +11,7 @@ import Loading from "../components/PageLoading";
 
 const CategoryManagement: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const[loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<CategoryFormData>({
     name: "",
@@ -60,7 +60,7 @@ const CategoryManagement: React.FC = () => {
     try {
       const updated = await updateCategory(editingId!, formData);
       setCategories((prev) =>
-        prev.map((cat) => (cat._id === editingId ? updated : cat))
+          prev.map((cat) => (cat._id === editingId ? updated : cat))
       );
       toast.success("Category updated");
       cancelEditing();
@@ -100,180 +100,195 @@ const CategoryManagement: React.FC = () => {
   };
 
   const filteredCategories = categories.filter((cat) =>
-    cat.name.toLowerCase().includes(searchTerm.toLowerCase())
+      cat.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   if (loading) {
     return (
-      <Loading/>
-    )
+        <div className="flex items-center justify-center h-screen bg-gradient-to-tr from-indigo-800 via-blue-900 to-purple-900">
+          <Loading />
+        </div>
+    );
   }
 
+  const inputBase =
+      "w-full rounded-lg px-4 py-2 border border-transparent placeholder-white/70 bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition shadow-sm";
+
+  const btnBase =
+      "inline-flex items-center justify-center rounded-lg px-5 py-2 text-sm font-semibold transition-shadow focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-600";
+
+  const btnIndigo = `${btnBase} bg-indigo-600 text-white hover:bg-indigo-700 shadow-md`;
+  const btnGreen = `${btnBase} bg-green-600 text-white hover:bg-green-700 shadow-md`;
+  const btnGray = `${btnBase} bg-slate-600 text-white hover:bg-slate-500 shadow`;
+  const btnRed = `${btnBase} bg-red-600 text-white hover:bg-red-700 shadow-md`;
+
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white rounded-2xl shadow-lg mt-8">
-      <h1 className="text-3xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
-        Category Management
-      </h1>
-
-      {/* Search */}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search categories..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 border border-white/20 rounded bg-white/10 text-white placeholder-gray-300 focus:ring-2 focus:ring-blue-300 w-full md:w-1/2"
-          aria-label="Search categories"
-        />
-      </div>
-
-      {/* Add Category Button */}
-      {!isAdding && editingId === null && (
-        <button
-          onClick={() => {
-            setFormData({ name: "", description: "" });
-            setIsAdding(true);
-          }}
-          className="mb-4 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 shadow"
-        >
-          + Add New Category
-        </button>
-      )}
-
-      {/* Add/Edit Form */}
-      {(isAdding || editingId !== null) && (
-        <div className="mb-8 p-6 border border-white/20 rounded bg-white/5">
-          <h2 className="text-xl font-semibold mb-4 text-indigo-300">
-            {editingId ? "Edit Category" : "Add New Category"}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              name="name"
-              placeholder="Category Name"
-              value={formData.name}
-              onChange={handleChange}
-              className="p-2 border border-white/20 rounded bg-white/10 text-white"
-            />
-            <input
-              name="description"
-              placeholder="Description"
-              value={formData.description || ""}
-              onChange={handleChange}
-              className="p-2 border border-white/20 rounded bg-white/10 text-white"
-            />
+      <div className="max-w-7xl mx-auto bg-gradient-to-tr from-indigo-800 via-blue-900 to-purple-900 rounded-2xl p-8 text-white shadow-2xl">
+        {/* Header */}
+        <header className="mb-8 border-b border-white/20 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="relative p-3 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg transform transition-transform hover:scale-105">
+              <span className="block w-5 h-5 bg-white rounded-sm rotate-[-10deg]" />
+              <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 animate-pulse" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold">Category Management</h1>
+              <p className="text-sm text-white/80">Manage your library's categories</p>
+            </div>
           </div>
-          <div className="flex space-x-4 mt-4">
-            {editingId ? (
-              <>
-                <button
-                  onClick={saveEditing}
-                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                >
-                  Save Changes
-                </button>
-                <button
-                  onClick={cancelEditing}
-                  className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-                >
-                  Cancel
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={handleAddCategory}
-                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                >
-                  Add Category
-                </button>
-                <button
+
+          {/* Search */}
+          <input
+              type="text"
+              placeholder="Search categories..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={`${inputBase} max-w-md w-full`}
+              aria-label="Search categories"
+          />
+        </header>
+
+        {/* Add New Category button aligned right */}
+        {!isAdding && editingId === null && (
+            <div className="flex justify-end mb-6">
+              <button
                   onClick={() => {
-                    setIsAdding(false);
                     setFormData({ name: "", description: "" });
+                    setIsAdding(true);
                   }}
-                  className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-                >
-                  Cancel
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+                  className={btnIndigo}
+              >
+                + Add New Category
+              </button>
+            </div>
+        )}
 
-      {/* Categories Table */}
-      <div className="overflow-x-auto rounded shadow-lg">
-        {filteredCategories.length === 0 ? (
-          <p className="p-6 text-center text-gray-300">No categories found.</p>
-        ) : (
-          <table className="w-full table-auto border-collapse">
-            <thead>
-              <tr className="bg-gradient-to-r from-indigo-600 to-purple-600">
-                <th className="border border-white/10 px-4 py-2 text-left">Category Name</th>
-                <th className="border border-white/10 px-4 py-2 text-left">Description</th>
-                <th className="border border-white/10 px-4 py-2 text-left">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCategories.map((cat) =>
-                editingId === cat._id ? (
-                  <tr key={cat._id} className="bg-yellow-50 text-black">
-                    <td className="border px-4 py-2">
-                      <input
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="w-full p-1 border rounded"
-                      />
-                    </td>
-                    <td className="border px-4 py-2">
-                      <input
-                        name="description"
-                        value={formData.description || ""}
-                        onChange={handleChange}
-                        className="w-full p-1 border rounded"
-                      />
-                    </td>
-                    <td className="border px-4 py-2 space-x-2">
-                      <button
-                        onClick={saveEditing}
-                        className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-                      >
-                        Save
+        {/* Add/Edit Form */}
+        {(isAdding || editingId !== null) && (
+            <section className="mb-8 max-w-3xl p-6 rounded-xl border border-white/20 bg-white/10 shadow-inner mx-auto">
+              <h2 className="text-2xl font-semibold mb-6 text-indigo-300">
+                {editingId ? "Edit Category" : "Add New Category"}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input
+                    name="name"
+                    placeholder="Category Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={inputBase}
+                    autoComplete="off"
+                />
+                <input
+                    name="description"
+                    placeholder="Description"
+                    value={formData.description || ""}
+                    onChange={handleChange}
+                    className={inputBase}
+                    autoComplete="off"
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-4 mt-6 justify-center">
+                {editingId ? (
+                    <>
+                      <button onClick={saveEditing} className={btnGreen}>
+                        Save Changes
+                      </button>
+                      <button onClick={cancelEditing} className={btnGray}>
+                        Cancel
+                      </button>
+                    </>
+                ) : (
+                    <>
+                      <button onClick={handleAddCategory} className={btnGreen}>
+                        Add Category
                       </button>
                       <button
-                        onClick={cancelEditing}
-                        className="bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
+                          onClick={() => {
+                            setIsAdding(false);
+                            setFormData({ name: "", description: "" });
+                          }}
+                          className={btnGray}
                       >
                         Cancel
                       </button>
-                    </td>
-                  </tr>
-                ) : (
-                  <tr key={cat._id} className="hover:bg-white/5 transition">
-                    <td className="border border-white/10 px-4 py-2">{cat.name}</td>
-                    <td className="border border-white/10 px-4 py-2">{cat.description || "—"}</td>
-                    <td className="border border-white/10 px-4 py-2 space-x-2">
-                      <button
-                        onClick={() => startEditing(cat)}
-                        className="bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDeleteCategory(cat._id)}
-                        className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                )
-              )}
-            </tbody>
-          </table>
+                    </>
+                )}
+              </div>
+            </section>
         )}
+
+        {/* Categories Table */}
+        <div className="overflow-x-auto rounded-lg border border-white/20 bg-white/10 shadow-lg">
+          {filteredCategories.length === 0 ? (
+              <p className="p-10 text-center text-white/70">No categories found.</p>
+          ) : (
+              <table className="w-full table-auto border-collapse text-white">
+                <thead className="bg-gradient-to-r from-indigo-600 to-purple-600 font-semibold">
+                <tr>
+                  <th className="px-5 py-3 text-left">Category Name</th>
+                  <th className="px-5 py-3 text-left">Description</th>
+                  <th className="px-5 py-3 text-left">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {filteredCategories.map((cat) =>
+                    editingId === cat._id ? (
+                        <tr key={cat._id} className="bg-yellow-300/20 text-black">
+                          <td className="px-5 py-3">
+                            <input
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="w-full p-2 border border-gray-300 rounded"
+                            />
+                          </td>
+                          <td className="px-5 py-3">
+                            <input
+                                name="description"
+                                value={formData.description || ""}
+                                onChange={handleChange}
+                                className="w-full p-2 border border-gray-300 rounded"
+                            />
+                          </td>
+                          <td className="px-5 py-3 space-x-3 whitespace-nowrap">
+                            <button onClick={saveEditing} className={`${btnGreen} px-4 py-1`}>
+                              Save
+                            </button>
+                            <button onClick={cancelEditing} className={`${btnGray} px-4 py-1`}>
+                              Cancel
+                            </button>
+                          </td>
+                        </tr>
+                    ) : (
+                        <tr
+                            key={cat._id}
+                            className="even:bg-white/10 hover:bg-purple-800/30 transition"
+                        >
+                          <td className="px-5 py-3">{cat.name}</td>
+                          <td className="px-5 py-3">{cat.description || "—"}</td>
+                          <td className="px-5 py-3 space-x-3 whitespace-nowrap">
+                            <button
+                                onClick={() => startEditing(cat)}
+                                className={`${btnIndigo} px-4 py-1`}
+                            >
+                              Edit
+                            </button>
+                            <button
+                                onClick={() => handleDeleteCategory(cat._id)}
+                                className={`${btnRed} px-4 py-1`}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                    )
+                )}
+                </tbody>
+              </table>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 
