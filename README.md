@@ -31,8 +31,7 @@ Built with a **React (TypeScript)** frontend and a **Node.js/Express** backend.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/HansakaV/library-system.git
-cd library-system
+git clone https://github.com/orion343dream/Book-Club-Library-Management-Web-Application.git
 ```
 
 ---
@@ -40,7 +39,7 @@ cd library-system
 ### 2. Frontend Setup
 
 ```bash
-cd frontend
+cd client
 npm install
 npm run dev
 ```
@@ -50,13 +49,13 @@ npm run dev
 ### 3. Backend Setup
 
 ```bash
-cd backend
+cd server
 npm install
 npm run dev
 ```
 
 > 📝 **Important:**
-> Create a `.env` file inside the `backend` folder with your environment variables. At minimum, set:
+> Create a `.env` file inside the `server` folder with your environment variables. At minimum, set:
 
 ```env
 MONGODB_URI=your-mongodb-uri
@@ -75,7 +74,7 @@ EMAIL_FROM=library@example.com
 
 1. Go to [Vercel](https://vercel.com/) and log in with GitHub.
 2. Click **"New Project"**, then **import your GitHub repo**.
-3. Set the **project root** to `frontend/`.
+3. Set the **project root** to `client/`.
 4. Confirm the detected settings (React app).
 5. Click **Deploy** 🎉
 
@@ -85,7 +84,7 @@ EMAIL_FROM=library@example.com
 
 1. Go to [Railway](https://railway.app/) and log in.
 2. Click **"New Project" → "Deploy from GitHub Repo"**.
-3. Set the **project root** to `backend/`.
+3. Set the **project root** to `server/`.
 4. Add required environment variables:
 
    * `MONGODB_URI`
@@ -127,7 +126,7 @@ library-system/
 * 🕒 **Overdue Tracking**: See which books are overdue
 * 📊 **Dashboard**: Summary metrics and responsive charts
 * 📬 **Email Notifications**: Send reminders for overdue books
-* 🌐 **Deployed**: Vercel (frontend) + Railway (backend)
+* 🌐 **Deployed**: Vercel (client) + Railway (server)
 
 ---
 
